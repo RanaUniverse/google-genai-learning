@@ -1,18 +1,24 @@
-from dotenv import load_dotenv
 import os
+
+
+from dotenv import load_dotenv
+
+from google import genai
+
 
 load_dotenv()
 
-# When you need the value
-value = os.environ.get("GEMINI_API_KEY")
+private_api_key = os.environ.get("GEMINI_API_KEY")
 
 
-def main():
-    print("Hello from google-genai-learning!")
-    print("I will use google genai api key now.")
-    print("The Private Value is,")
-    print(value)
+client = genai.Client(api_key=private_api_key)
 
+MODEL_NAME = "gemini-2.5-flash"
 
-if __name__ == "__main__":
-    main()
+prompt = "How old the our univers is? say with appropriate emoji."
+
+response = client.models.generate_content(  # type: ignore
+    model=MODEL_NAME,
+    contents=prompt,
+)
+print(response.text)
